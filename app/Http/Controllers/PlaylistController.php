@@ -1,24 +1,33 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Song;
+use Illuminate\Http\Request;
 
-class Artist extends Model
+class PlaylistController extends Controller
 {
-    protected $fillable = [
-        'name',
-        'genre',
-        'profile_pic_url',
-        'monthly_listeners',
-    ];
-
-    /**
-     * Um artista possui vários álbuns.
-     */
-    public function albums(): HasMany
+    public function index(Request $request)
     {
-        return $this->hasMany(Album::class);
+        // Começa buscando as músicas
+        $songs = Song::query();
+
+        // Filtro por gênero
+        if ($request->filled('genre')) {
+            $songs->where('genre', $request->genre);
+        }
+
+        // Busca por título ou artista
+        if ($request->filled('q')) {
+            $songs->where(function ($query) use ($request) {
+                $query->where('title', 'like', '%' . $request->q . '%')
+                      ->orWhere('artist', 'like', '%' . $request->q . '%');
+            });
+        }
+
+        // Paginação: 10 músicas por página
+        return response()->json(
+            $songs->orderBy('title')->paginate(10)
+        );
     }
 }

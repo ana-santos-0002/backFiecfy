@@ -1,44 +1,36 @@
+
 <?php
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-class Song extends Model
+return new class extends Migration
 {
-    protected $fillable = [
-        'album_id',
-        'title',
-        'duration_seconds',
-        'track_number',
-        'is_explicit',
-        'audio_path',
-    ];
-
-    protected function casts(): array
+    public function up(): void
     {
-        return [
-            'duration_seconds' => 'integer',
-            'track_number' => 'integer',
-            'is_explicit' => 'boolean',
-        ];
+        // Criando a tabela de álbuns
+        Schema::create('albums', function (Blueprint $table) {
+            $table->id();
+
+            // Relacionamento com o artista
+            $table->foreignId('artist_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
+
+            // Informações do álbum
+            $table->string('title');
+            $table->integer('release_year');
+            $table->string('cover_image')->nullable();
+
+            // Data de criação e atualização
+            $table->timestamps();
+        });
     }
 
-    /**
-     * Uma música pertence a um álbum.
-     */
-    public function album(): BelongsTo
+    public function down(): void
     {
-        return $this->belongsTo(Album::class);
+        // Apaga a tabela se a migration for revertida
+        Schema::dropIfExists('albums');
     }
-
-    /**
-     * Uma música pode pertencer a várias playlists.
-     */
-    public function playlists(): BelongsToMany
-    {
-        return $this->belongsToMany(Playlist::class);
-    }
-}
+};

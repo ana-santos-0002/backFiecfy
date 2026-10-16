@@ -8,14 +8,15 @@ use Illuminate\Http\Request;
 class SongController extends Controller
 {
     /**
-     * Lista todas as músicas.
+     *Lista todas as músicas.
+    
+    *public function index()
+    *   {
+    *       $songs = Song::all();
+    *
+    *       return response()->json($songs, 200);
+    *   }
      */
-    public function index()
-    {
-        $songs = Song::all();
-
-        return response()->json($songs, 200);
-    }
 
     /**
      * Cadastra uma nova música.
@@ -79,5 +80,38 @@ class SongController extends Controller
         return response()->json([
             'message' => 'Música excluída com sucesso.'
         ], 200);
+    }
+
+    /*****************************/
+
+    //listar todas as músicas
+    public function index (Request $request){
+        $musicas = [
+    ['title' => 'Back in Black', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+    ['title' => 'Thunderstruck', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+    ['title' => 'Highway to Hell', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+    ['title' => 'Hells Bells', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+    ['title' => 'You Shook Me All Night Long', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+    ['title' => 'T.N.T.', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+    ['title' => 'Shoot to Thrill', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+    ['title' => 'Dirty Deeds Done Dirt Cheap', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+    ['title' => 'Rock or Bust', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+    ['title' => 'Whole Lotta Rosie', 'artist' => 'AC/DC', 'genre' => 'Rock'],
+
+    // 5 músicas de Rock — Queen
+    ['title' => 'Bohemian Rhapsody', 'artist' => 'Queen', 'genre' => 'Rock'],
+    ['title' => 'We Will Rock You', 'artist' => 'Queen', 'genre' => 'Rock'],
+    ['title' => 'Another One Bites the Dust', 'artist' => 'Queen', 'genre' => 'Rock'],
+    ['title' => 'Dont Stop Me Now', 'artist' => 'Queen', 'genre' => 'Rock'],
+    ['title' => 'Somebody to Love', 'artist' => 'Queen', 'genre' => 'Rock'],
+
+    // 5 músicas de outros gêneros
+    ['title' => 'Billie Jean', 'artist' => 'Michael Jackson', 'genre' => 'Pop'],
+    ['title' => 'Like a Prayer', 'artist' => 'Madonna', 'genre' => 'Pop'],
+    ['title' => 'Imagine', 'artist' => 'John Lennon', 'genre' => 'Pop'],
+    ['title' => 'Smells Like Teen Spirit', 'artist' => 'Nirvana', 'genre' => 'Grunge'],
+    ['title' => 'Hotel California', 'artist' => 'Eagles', 'genre' => 'Country Rock'],
+];
+    return response()->json($musicas);
     }
 }
