@@ -58,7 +58,7 @@ GET http://127.0.0.1:8000/api/songs/paginado
 ROTA COMBINANDO TUDO
 */
 
-Route::get('/songs', function (Request $request) {
+Route::get('/songs/consulta', function (Request $request) {
   $query = Song::query();
 
   if ($request->filled('genre')) {
